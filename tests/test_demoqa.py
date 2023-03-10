@@ -21,9 +21,10 @@ def test_student_registration_form():
     # Fill in form elements
     browser.element('#firstName').should(be.blank).type('Jon')
     browser.element('#lastName').should(be.blank).type('Dir')
+    browser.element('#userEmail').should(be.blank).type('jondir@example.com')
     browser.element('[for=gender-radio-1]').should(be.clickable).click()
     browser.element('[placeholder="Mobile Number"]').should(be.blank).type('5296846163')
-    browser.element('#userEmail').should(be.blank).type('jondir@example.com')
+
     browser.element('#dateOfBirthInput').send_keys(
         Keys.CONTROL + 'a',
         Keys.NULL,
@@ -49,7 +50,24 @@ def test_student_registration_form():
     browser.element('#react-select-4-input').send_keys("a")
     browser.all('[id^="react-select-4-option"]').element_by(have.exact_text('Karnal')).click()
 
+    # submit form
     browser.element('#submit').click()
 
+    # check iframe table
+    # check table header has two columns
+    browser.all('.table thead>tr>th').should(have.size(2))
 
+    # check table header cells have correct text
+    browser.all('.table thead>tr>th').should(have.exact_texts('Label', 'Values'))
+
+    # check table body has ten columns
+    browser.all('.table tbody>tr').should(have.size(10))
+
+    # check table cells in column Value have values entered into the form in the previous steps
+    browser.all('.table tbody>tr>td').even.should(have.exact_texts(
+        'Jon Dir', 'jondir@example.com', 'Male', '5296846163', '01 May,2000', 'Computer Science',
+        'Reading', 'gl.jpg', 'This is my current address in New York USA', 'Haryana Karnal'))
+
+    # close iframe table
+    browser.element('#closeLargeModal').should(be.clickable).click()
 
