@@ -1,11 +1,11 @@
-from selene import browser, have, be, command, query
+from selene import browser, have, be
 from selenium.webdriver import Keys
 import os
 
 
 def test_student_registration_form():
-    # Open page using base URL https://demoqa.com/automation-practice-form/
-    browser.open('/')
+    # Open page using base URL https://demoqa.com
+    browser.open('/automation-practice-form')
 
     # Check we are on the correct page by text 'Student Registration Form'
     browser.element('[class=practice-form-wrapper] h5').should(have.exact_text('Student Registration Form'))
@@ -88,4 +88,3 @@ def test_student_registration_form():
 
     # close iframe table
     browser.element('#closeLargeModal').should(be.clickable).click()
-
