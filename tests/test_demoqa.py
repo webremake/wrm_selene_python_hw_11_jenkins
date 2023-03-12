@@ -26,19 +26,14 @@ def test_student_registration_form(browser_control):
     browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
 
     # WHEN
-
-    # field Name
     browser.element('#firstName').should(be.blank).type('Jon')
     browser.element('#lastName').should(be.blank).type('Dir')
 
-    # field Email
     browser.element('#userEmail').should(be.blank).type('jondir@example.com')
 
-    # field Gender
-    browser.element('[for=gender-radio-1]').should(be.clickable).click()
+    browser.all('[for^=gender-radio]').element_by(have.text('Male')).click()
 
-    # field Mobile
-    browser.element('[placeholder="Mobile Number"]').should(be.blank).type('5296846163')
+    browser.element('#userNumber').should(be.blank).type('5296846163')
 
     # field Date of Birth
     browser.element('#dateOfBirthInput').send_keys(
