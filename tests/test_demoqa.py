@@ -2,23 +2,30 @@ from selene import browser, have, be
 from selenium.webdriver import Keys
 import os
 
+# BDD = Given, When, Then
+"""
+Given (дано) — ситуация выглядит вот так: есть какое-то состояние до того, как пользователь вошел в сценарий.
+When (когда) — что-то происходит: пользователь совершает какие-то действия.
+Then (тогда) — теперь ситуация выглядит по-другому: система реагирует на пользовательские действия.
+"""
 
-def test_student_registration_form():
-    # Open page using base URL https://demoqa.com
+
+def test_student_registration_form(browser_control):
+    # GIVEN
     browser.open('/automation-practice-form')
+    browser.element('.practice-form-wrapper h5').should(have.exact_text('Student Registration Form'))
 
-    # Check we are on the correct page by text 'Student Registration Form'
-    browser.element('[class=practice-form-wrapper] h5').should(have.exact_text('Student Registration Form'))
-
-    # Remove advertising banners
-    browser.execute_script('document.querySelector("#fixedban").remove()')
-    browser.element('footer').execute_script('element.remove()')
+    """
+    # browser.execute_script('document.querySelector("#fixedban").remove()')
+    """
+    browser.element('#fixedban').execute_script('element.remove()')
     browser.element('.sidebar-content').execute_script('element.remove()')
 
-    # Scroll browser window to the end of the page
+    browser.element('footer').execute_script('element.remove()')
+
     browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
 
-    # section FILL IN FORM ELEMENTS
+    # WHEN
 
     # field Name
     browser.element('#firstName').should(be.blank).type('Jon')
@@ -45,7 +52,7 @@ def test_student_registration_form():
     browser.element('#subjectsInput').should(be.blank).type('com')
 
     # Click on "Computer Science" element in dropdown menu
-    browser.all('.subjects-auto-complete__menu-list>.subjects-auto-complete__option').element_by\
+    browser.all('.subjects-auto-complete__menu-list>.subjects-auto-complete__option').element_by \
         (have.exact_text('Computer Science')).click()
 
     # field Hobbies
@@ -55,7 +62,7 @@ def test_student_registration_form():
     browser.element('#uploadPicture').send_keys(os.getcwd() + r'\gl.jpg')
 
     # field Current Address
-    browser.element('#currentAddress').should(be.blank).type\
+    browser.element('#currentAddress').should(be.blank).type \
         ('This is\nmy current\naddress\nin New York\n USA')
 
     # field State
