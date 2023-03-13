@@ -21,9 +21,14 @@ def test_student_registration_form(browser_control):
     browser.element('#fixedban').execute_script('element.remove()')
     browser.element('.sidebar-content').execute_script('element.remove()')
 
+    '''
+    # удалять элемент дизайна каким является футер плохо, лучше сделать клик ч-з JS 
     browser.element('footer').execute_script('element.remove()')
+    '''
+
 
     browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+
 
     # WHEN
     browser.element('#firstName').should(be.blank).type('Jon')
@@ -35,29 +40,27 @@ def test_student_registration_form(browser_control):
 
     browser.element('#userNumber').should(be.blank).type('5296846163')
 
-    # field Date of Birth
-    browser.element('#dateOfBirthInput').send_keys(
-        Keys.CONTROL + 'a',
-        Keys.NULL,
-        '01 May 2000',
-        Keys.ENTER
-    )
-    # field Subject
-    # Type 'com' to see dropdown menu
-    browser.element('#subjectsInput').should(be.blank).type('com')
+    browser.element('#dateOfBirthInput').click()
+    browser.element('.react-datepicker__month-select').type('May')
+    browser.element('.react-datepicker__year-select').type('1957')
+    browser.element(f'.react-datepicker__day--0{12}').click()
 
-    # Click on "Computer Science" element in dropdown menu
-    browser.all('.subjects-auto-complete__menu-list>.subjects-auto-complete__option').element_by \
+    '''
+    # если хотим проверить работает ли авто дополнение
+    browser.all('.subjects-auto-complete__menu-list>.subjects-auto-complete__option').element_by\
         (have.exact_text('Computer Science')).click()
+    '''
+    browser.element('#subjectsInput').type('Commerce').press_enter()
 
     # field Hobbies
-    browser.element('[for="hobbies-checkbox-2"]').should(be.clickable).click()
+    # browser.element('[for="hobbies-checkbox-2"]').should(be.clickable).click()
+    browser.all('[for^=hobbies-checkbox]').element_by(have.text('Reading')).should(be.clickable).click()
 
     # field Picture
     browser.element('#uploadPicture').send_keys(os.getcwd() + r'\gl.jpg')
 
     # field Current Address
-    browser.element('#currentAddress').should(be.blank).type \
+    browser.element('#currentAddress').should(be.blank).with_(set_value_by_js=True).set_value\
         ('This is\nmy current\naddress\nin New York\n USA')
 
     # field State
@@ -70,8 +73,9 @@ def test_student_registration_form(browser_control):
     # end section
 
     # submit form
-    browser.element('#submit').click()
+    browser.element('#submit').with_(click_by_js=True).click()
 
+    # THEN
     # section CHECK IFRAME TABLE
     # check table header has two columns
     browser.all('.table thead>tr>th').should(have.size(2))
@@ -84,7 +88,7 @@ def test_student_registration_form(browser_control):
 
     # check table cells in column Value have values entered into the form in the previous steps
     browser.all('.table tbody>tr>td').even.should(have.exact_texts(
-        'Jon Dir', 'jondir@example.com', 'Male', '5296846163', '01 May,2000', 'Computer Science',
+        'Jon Dir', 'jondir@example.com', 'Male', '5296846163', '12 May,1957', 'Commerce',
         'Reading', 'gl.jpg', 'This is my current address in New York USA', 'Haryana Karnal'))
     # end section
 
