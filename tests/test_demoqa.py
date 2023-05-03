@@ -1,6 +1,5 @@
 from selene import browser, have, be
-from selenium.webdriver import Keys
-import os
+from os.path import abspath, dirname
 
 # BDD = Given, When, Then
 """
@@ -57,7 +56,7 @@ def test_student_registration_form(browser_control):
     browser.all('[for^=hobbies-checkbox]').element_by(have.text('Reading')).should(be.clickable).click()
 
     # field Picture
-    browser.element('#uploadPicture').send_keys(os.getcwd() + r'\gl.jpg')
+    browser.element('#uploadPicture').send_keys(dirname(abspath(__file__)) + r'\resources\gl.jpg')
 
     # field Current Address
     browser.element('#currentAddress').should(be.blank).with_(set_value_by_js=True).set_value\
