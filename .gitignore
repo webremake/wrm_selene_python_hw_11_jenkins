@@ -130,3 +130,7 @@ dmypy.json
 /.idea/*
 main.py
 
+# allure
+**/allure-report/
+**/allure-results/
+
