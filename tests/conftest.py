@@ -6,6 +6,7 @@ from selene import browser
 from selenium import webdriver
 
 from dotenv import load_dotenv
+from wrm_selene_python_hw_11_jenkins.utils import attach
 
 '''
 @pytest.fixture(scope='function', autouse=True)
@@ -65,5 +66,9 @@ def browser_control(browser_mode):
             desired_capabilities=selenoid_capabilities
         )
 
-    yield
+    yield browser
+    attach.add_logs(browser)
+    attach.add_html(browser)
+    attach.add_screenshot(browser)
+    attach.add_video(browser)
     browser.quit()
