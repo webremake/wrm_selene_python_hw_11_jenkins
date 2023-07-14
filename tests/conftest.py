@@ -30,7 +30,7 @@ def pytest_addoption(parser):
         "--browser_mode",
         action="store",
         choices=["local", "selenoid"],
-        default="local",
+        default="selenoid",
         help="Specify the browser mode: 'local' for local browser or 'selenoid' for Selenoid",
     )
 
