@@ -10,7 +10,7 @@ from selene import browser, have, be
 @allure.feature("Allure reports")
 @allure.story("Allure with steps and decorator labels")
 @allure.link("https://github.com", name="Testing")
-def test_github_find_repo_issue_by_number_with_allure_dynamic_steps(browser_control):
+def test_find_github_repo_issue_by_number_with_allure_dynamic_steps(browser_control):
     with allure.step("открываем https://github.com/"):
         browser.open('/')
     with allure.step("нажимаем на кнопку Search or jump to"):
@@ -26,6 +26,6 @@ def test_github_find_repo_issue_by_number_with_allure_dynamic_steps(browser_cont
         browser.element('#issues-tab').should(be.clickable).click()
 
     with allure.step("проверяем что в списке есть issue с номером `#2"):
-        assert browser.elements('.opened-by').second.should(have.text('#2'))
+        assert browser.all('.opened-by').second.should(have.text('#2'))
         #assert browser.elements('[id^="issue_"][id$="_link"]').should(have.size_greater_than(3))
         # assert browser.all('[id^="issue_"][id$="_link"]').second.should(have.text('tmp_path_factory()'))
