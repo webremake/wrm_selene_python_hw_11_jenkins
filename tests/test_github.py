@@ -27,5 +27,5 @@ def test_find_github_repo_issue_by_number_with_allure_dynamic_steps(browser_cont
 
     with allure.step("проверяем что в списке есть issue с номером `#2"):
         assert browser.all('.opened-by').second.should(have.text('#2'))
-        #assert browser.elements('[id^="issue_"][id$="_link"]').should(have.size_greater_than(3))
+        # assert browser.all('[id^="issue_"][id$="_link"]').should(have.size_greater_than(2))
         # assert browser.all('[id^="issue_"][id$="_link"]').second.should(have.text('tmp_path_factory()'))
