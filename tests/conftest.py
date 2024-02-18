@@ -24,7 +24,7 @@ def browser_control():
 '''
 DEFAULT_BROWSER_MODE = 'selenoid'
 DEFAULT_BROWSER = 'chrome'
-DEFAULT_BROWSER_VERSION = '115.0'
+DEFAULT_BROWSER_VERSION = '116'
 
 @pytest.fixture(scope='session', autouse=True)
 def load_env():
@@ -52,7 +52,7 @@ def pytest_addoption(parser):
         "--browser_version",
         action="store",
         default=DEFAULT_BROWSER_VERSION,
-        help="Specify the browser version - chrome: 115.0, edge: 114.0, firefox: 115.0, safari: 15.0"
+        help="Specify the browser version - chrome: 116.0, edge: 114.0, firefox: 117.0, safari: 15.0"
     )
 
 @pytest.fixture(scope="session")
@@ -65,7 +65,7 @@ def get_option_browser_name(request):
 
 @pytest.fixture(scope='session')
 def get_option_browser_version(request):
-    return request.config.getoption('--browser_name')
+    return request.config.getoption('--browser_version')
 
 @pytest.fixture(scope='function', autouse=True)
 def browser_control(get_option_browser_mode, get_option_browser_name, get_option_browser_version):
@@ -86,10 +86,10 @@ def browser_control(get_option_browser_mode, get_option_browser_name, get_option
     if browser_mode == "selenoid":
         options = Options()
         selenoid_capabilities = {
-            # "browserName": browser_name,
-            # "browserVersion": browser_version,
-            "browserName": 'firefox',
-            "browserVersion": '115.0',
+            "browserName": browser_name,
+            "browserVersion": browser_version,
+            # "browserName": 'firefox',
+            # "browserVersion": '116.0',
             "selenoid:options": {
                 "enableVNC": True,
                 "enableVideo": True
@@ -111,7 +111,7 @@ def browser_control(get_option_browser_mode, get_option_browser_name, get_option
         )
 
     yield browser
-    # attach.add_logs(browser)
+    attach.add_logs(browser)
     attach.add_html(browser)
     attach.add_screenshot(browser)
     attach.add_video(browser)
