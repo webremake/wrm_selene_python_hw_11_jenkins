@@ -23,8 +23,8 @@ def browser_control():
     browser.config.timeout = 6.0
 '''
 DEFAULT_BROWSER_MODE = 'selenoid'
-DEFAULT_BROWSER = 'chrome'
-DEFAULT_BROWSER_VERSION = '116'
+DEFAULT_BROWSER = 'firefox'
+DEFAULT_BROWSER_VERSION = '119'
 
 @pytest.fixture(scope='session', autouse=True)
 def load_env():
@@ -105,7 +105,7 @@ def browser_control(get_option_browser_mode, get_option_browser_name, get_option
 
         browser.config.driver = webdriver.Remote(
             # command_executor=f"https://{login}:{password}@selenoid.autotests.cloud/wd/hub",
-            command_executor="http://8.211.9.7:4444/wd/hub",
+            command_executor="http://34.116.165.129:4444/wd/hub",
             # desired_capabilities=selenoid_capabilities
             options=options
         )
